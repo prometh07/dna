@@ -37,3 +37,14 @@ mostFrequentKmers text k = mostFrequentKmers' text Map.empty
           where
             kmer = take k text
             val = Data.Maybe.fromMaybe 0 (Map.lookup kmer m) + 1
+
+reverseComplement :: String -> String
+reverseComplement dna = reverse $ map (\n -> case n of {'A' -> 'T'; 'T' -> 'A'; 'G' -> 'C'; 'C' -> 'G'}) dna
+
+patternOccurences :: String -> String -> [Int]
+patternOccurences text pattern = patternOccurences' text [] 0
+  where
+    patternOccurences' [] list index = reverse list
+    patternOccurences' text list index
+      | take (length pattern) text == pattern = patternOccurences' (drop 1 text) (index : list) (index+1)
+      | otherwise = patternOccurences' (drop 1 text) list (index+1)
